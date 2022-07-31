@@ -1,6 +1,7 @@
 //fetch("https://maps.googleapis.com/maps/api/directions/json?mode=transit&origin=Prague&destination=Brno&key=AIzaSyCSySYbaRWc-61f7f1GXYsqKzZVnESuNdw").then(res=>res.json()).then(res=>console.log(res)).catch(err=>console.log(err))
 
 let currentValidSite;
+let firstRun = true
 
 setInterval(() => {
 
@@ -17,8 +18,9 @@ setInterval(() => {
     //if (x.length > 1 && y.length === 1)
 
     if (f.length === 2 && c.length === 2 && g.length === 1) {
-        //console.log("running 1")
-        if (currentValidSite !== window.location.href) {
+        console.log("running")
+        if (currentValidSite !== window.location.href || firstRun) {
+            firstRun = false
             //console.log("running 2")
             currentValidSite = window.location.href
 

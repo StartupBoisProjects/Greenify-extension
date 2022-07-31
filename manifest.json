@@ -10,7 +10,7 @@
     },
     "content_scripts": [
         {
-            "matches": ["https://*/maps/dir/*"],
+            "matches": ["https://*/maps/*"],
             "js": ["Content.js"]
         }
     ]

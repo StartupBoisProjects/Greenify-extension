@@ -1,33 +1,10 @@
 //fetch("https://maps.googleapis.com/maps/api/directions/json?mode=transit&origin=Prague&destination=Brno&key=AIzaSyCSySYbaRWc-61f7f1GXYsqKzZVnESuNdw").then(res=>res.json()).then(res=>console.log(res)).catch(err=>console.log(err))
 
 let currentValidSite;
-let currentSelectedVehicle = 'none';
 
 setInterval(() => {
 
     const url = window.location.href
-
-    const walk = document.querySelector("#omnibox-directions > div > div:nth-child(2) > div > div > div > div:nth-child(4) > button")
-    isWalkSelected = walk.getAttribute("aria-checked")
-    const bike = document.querySelector("#omnibox-directions > div > div:nth-child(2) > div > div > div > div:nth-child(5) > button")
-    isBikeSelected = bike.getAttribute("aria-checked")
-            
-    const recommended = document.querySelector("#omnibox-directions > div > div:nth-child(2) > div > div > div > div:nth-child(1) > button")
-    isRecommendedSelected = recommended.getAttribute("aria-checked")
-    const car = document.querySelector("#omnibox-directions > div > div:nth-child(2) > div > div > div > div:nth-child(2) > button")
-    isCarSelected = car.getAttribute("aria-checked")
-    const airplane = document.querySelector("#omnibox-directions > div > div:nth-child(2) > div > div > div > div:nth-child(6) > button")
-    isAirplaneSelected = airplane.getAttribute("aria-checked")
-    const transit = document.querySelector("#omnibox-directions > div > div:nth-child(2) > div > div > div > div:nth-child(3) > button")
-    isTransitSelected = transit.getAttribute("aria-checked")
-
-    let vehicle;
-    if (isWalkSelected === "true") vehicle = "walk";
-    if (isCarSelected === "true") vehicle = "car";
-    if (isAirplaneSelected === "true") vehicle = "airplane";
-    if (isRecommendedSelected === "true") vehicle = "recommended";
-    if (isBikeSelected === "true") vehicle = "bike";
-    if (isTransitSelected === "true") vehicle = "transit";
 
     const f = url.split("www.google")
     const c = url.split("/maps/dir")
@@ -41,24 +18,21 @@ setInterval(() => {
 
     if (f.length === 2 && c.length === 2 && g.length === 1) {
         //console.log("running 1")
-        if ((currentValidSite !== window.location.href.split('@')[0] && window.location.href.split('@')).length > 1 || currentSelectedVehicle !== vehicle) {
+        if (currentValidSite !== window.location.href) {
             //console.log("running 2")
-            currentValidSite = window.location.href.split('@')[0]
-            currentSelectedVehicle = vehicle
+            currentValidSite = window.location.href
 
-            console.log("STATE: ", currentSelectedVehicle)
-    
             let splitedURL = url.split('/maps/dir/')[1]
             const departure = splitedURL.split('/')[0]
             const arrival = splitedURL.split('/')[1]
-    
+
             fetch(`https://2ccdf1c14188.eu.ngrok.io/?start_location=${departure}&end_location=${arrival}`)
                 .then(res => res.json())
                 .then(res => {
                     const data = res["final_list"]
-                    
+
                     //fetch(`https://2ccdf1c14188.eu.ngrok.io/?start_location${}`)
-                    
+
                     /*const elements = document.querySelectorAll(".m6QErb")
                     let result;
                     for(var i = 0; i < elements.length; i++) {
@@ -67,21 +41,39 @@ setInterval(() => {
                             result = elements[i]
                         }
                     }*/
-                    
-                 
+                    const walk = document.querySelector("#omnibox-directions > div > div:nth-child(2) > div > div > div > div:nth-child(4) > button")
+                    isWalkSelected = walk.getAttribute("aria-checked")
+                    const bike = document.querySelector("#omnibox-directions > div > div:nth-child(2) > div > div > div > div:nth-child(5) > button")
+                    isBikeSelected = bike.getAttribute("aria-checked")
+
+                    const recommended = document.querySelector("#omnibox-directions > div > div:nth-child(2) > div > div > div > div:nth-child(1) > button")
+                    isRecommendedSelected = recommended.getAttribute("aria-checked")
+                    const car = document.querySelector("#omnibox-directions > div > div:nth-child(2) > div > div > div > div:nth-child(2) > button")
+                    isCarSelected = car.getAttribute("aria-checked")
+                    const airplane = document.querySelector("#omnibox-directions > div > div:nth-child(2) > div > div > div > div:nth-child(6) > button")
+                    isAirplaneSelected = airplane.getAttribute("aria-checked")
+                    const transit = document.querySelector("#omnibox-directions > div > div:nth-child(2) > div > div > div > div:nth-child(3) > button")
+                    isTransitSelected = transit.getAttribute("aria-checked")
+
                     console.log(data)
-    
-                    
-            
+
+                    let vehicle;
+                    if (isWalkSelected === "true") vehicle = "walk";
+                    if (isCarSelected === "true") vehicle = "car";
+                    if (isAirplaneSelected === "true") vehicle = "airplane";
+                    if (isRecommendedSelected === "true") vehicle = "recommended";
+                    if (isBikeSelected === "true") vehicle = "bike";
+                    if (isTransitSelected === "true") vehicle = "transit";
+
                     let icons = document.querySelectorAll(".Os0QJc")
                     //console.log(vehicles)
-            
+
                     //data = [[4.876352456634322,4.876386153412359,4.876353438309775],[2336886,2317844,3563274,3411513]]
-            
+
                     let vehicles = []
 
-                    
-            
+
+
                     const iconsNames = {
                         "//maps.gstatic.com/consumer/images/icons/1x/directions_car_grey800_24dp.png": "car",
                         "//maps.gstatic.com/consumer/images/icons/1x/directions_transit_grey800_24dp.png": "transit",
@@ -100,7 +92,7 @@ setInterval(() => {
                         "//maps.gstatic.com/consumer/images/icons/4x/flight_grey800_24dp.png": "airplane",
                         "//maps.gstatic.com/consumer/images/icons/4x/directions_transit_grey800_24dp.png": "transit",
                     }
-            
+
                     for(var i = 0; i < icons.length; i++) {
                         const icon = icons[i].getAttribute("src");
                         try {
@@ -113,10 +105,10 @@ setInterval(() => {
                     console.log(vehicles)
 
                     const results = ["200g eCO2", "210g eCO2", "220g eCO2", "230g eCO2", "240g eCO2", "250g eCO2"]
-                    
+
                     let carCount = 0;
                     let transitCount = 0;
-            
+
                     const elements = document.querySelectorAll('.Fk3sm')
                     for(var i = 0; i < elements.length; i++) {
                         if (elements[i].innerText.includes("(")) return;
@@ -140,7 +132,7 @@ setInterval(() => {
                         } catch (err) {
                             console.log(err)
                         }
-                        
+
                     }
                 })
                 .catch(err => console.log(err))
@@ -150,5 +142,4 @@ setInterval(() => {
 }, 500)
 
 /*window.addEventListener('hashchange', function(){
-
-});*/
+});*/ 

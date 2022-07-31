@@ -1,10 +1,33 @@
 //fetch("https://maps.googleapis.com/maps/api/directions/json?mode=transit&origin=Prague&destination=Brno&key=AIzaSyCSySYbaRWc-61f7f1GXYsqKzZVnESuNdw").then(res=>res.json()).then(res=>console.log(res)).catch(err=>console.log(err))
 
 let currentValidSite;
+let currentSelectedVehicle = 'none';
 
 setInterval(() => {
 
     const url = window.location.href
+
+    const walk = document.querySelector("#omnibox-directions > div > div:nth-child(2) > div > div > div > div:nth-child(4) > button")
+    isWalkSelected = walk.getAttribute("aria-checked")
+    const bike = document.querySelector("#omnibox-directions > div > div:nth-child(2) > div > div > div > div:nth-child(5) > button")
+    isBikeSelected = bike.getAttribute("aria-checked")
+            
+    const recommended = document.querySelector("#omnibox-directions > div > div:nth-child(2) > div > div > div > div:nth-child(1) > button")
+    isRecommendedSelected = recommended.getAttribute("aria-checked")
+    const car = document.querySelector("#omnibox-directions > div > div:nth-child(2) > div > div > div > div:nth-child(2) > button")
+    isCarSelected = car.getAttribute("aria-checked")
+    const airplane = document.querySelector("#omnibox-directions > div > div:nth-child(2) > div > div > div > div:nth-child(6) > button")
+    isAirplaneSelected = airplane.getAttribute("aria-checked")
+    const transit = document.querySelector("#omnibox-directions > div > div:nth-child(2) > div > div > div > div:nth-child(3) > button")
+    isTransitSelected = transit.getAttribute("aria-checked")
+
+    let vehicle;
+    if (isWalkSelected === "true") vehicle = "walk";
+    if (isCarSelected === "true") vehicle = "car";
+    if (isAirplaneSelected === "true") vehicle = "airplane";
+    if (isRecommendedSelected === "true") vehicle = "recommended";
+    if (isBikeSelected === "true") vehicle = "bike";
+    if (isTransitSelected === "true") vehicle = "transit";
 
     const f = url.split("www.google")
     const c = url.split("/maps/dir")
@@ -18,9 +41,12 @@ setInterval(() => {
 
     if (f.length === 2 && c.length === 2 && g.length === 1) {
         //console.log("running 1")
-        if (currentValidSite !== window.location.href) {
+        if (currentValidSite !== window.location.href.split('@')[0] || currentSelectedVehicle !== vehicle) {
             //console.log("running 2")
-            currentValidSite = window.location.href
+            currentValidSite = window.location.href.split('@')[0]
+            currentSelectedVehicle = vehicle
+
+            console.log("STATE: ", currentSelectedVehicle)
     
             let splitedURL = url.split('/maps/dir/')[1]
             const departure = splitedURL.split('/')[0]
@@ -41,29 +67,11 @@ setInterval(() => {
                             result = elements[i]
                         }
                     }*/
-                    const walk = document.querySelector("#omnibox-directions > div > div:nth-child(2) > div > div > div > div:nth-child(4) > button")
-                    isWalkSelected = walk.getAttribute("aria-checked")
-                    const bike = document.querySelector("#omnibox-directions > div > div:nth-child(2) > div > div > div > div:nth-child(5) > button")
-                    isBikeSelected = bike.getAttribute("aria-checked")
-            
-                    const recommended = document.querySelector("#omnibox-directions > div > div:nth-child(2) > div > div > div > div:nth-child(1) > button")
-                    isRecommendedSelected = recommended.getAttribute("aria-checked")
-                    const car = document.querySelector("#omnibox-directions > div > div:nth-child(2) > div > div > div > div:nth-child(2) > button")
-                    isCarSelected = car.getAttribute("aria-checked")
-                    const airplane = document.querySelector("#omnibox-directions > div > div:nth-child(2) > div > div > div > div:nth-child(6) > button")
-                    isAirplaneSelected = airplane.getAttribute("aria-checked")
-                    const transit = document.querySelector("#omnibox-directions > div > div:nth-child(2) > div > div > div > div:nth-child(3) > button")
-                    isTransitSelected = transit.getAttribute("aria-checked")
+                    
                  
                     console.log(data)
     
-                    let vehicle;
-                    if (isWalkSelected === "true") vehicle = "walk";
-                    if (isCarSelected === "true") vehicle = "car";
-                    if (isAirplaneSelected === "true") vehicle = "airplane";
-                    if (isRecommendedSelected === "true") vehicle = "recommended";
-                    if (isBikeSelected === "true") vehicle = "bike";
-                    if (isTransitSelected === "true") vehicle = "transit";
+                    
             
                     let icons = document.querySelectorAll(".Os0QJc")
                     //console.log(vehicles)

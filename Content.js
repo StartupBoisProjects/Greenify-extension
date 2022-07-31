@@ -41,7 +41,7 @@ setInterval(() => {
 
     if (f.length === 2 && c.length === 2 && g.length === 1) {
         //console.log("running 1")
-        if (currentValidSite !== window.location.href.split('@')[0] || currentSelectedVehicle !== vehicle) {
+        if ((currentValidSite !== window.location.href.split('@')[0] && window.location.href.split('@')).length > 1 || currentSelectedVehicle !== vehicle) {
             //console.log("running 2")
             currentValidSite = window.location.href.split('@')[0]
             currentSelectedVehicle = vehicle

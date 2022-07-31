@@ -1,0 +1,17 @@
+{
+    "manifest_version": 3,
+    "name": "Greenify",
+    "description": "Fast and easy way to calculate emissions from a simple google maps search",
+    "version": "0.1.0",
+    "icons": {
+        "16": "/images/16.png",
+        "48": "/images/48.png",
+        "128": "/images/128.png"
+    },
+    "content_scripts": [
+        {
+            "matches": ["https://*/maps/dir/*"],
+            "js": ["Content.js"]
+        }
+    ]
+}
